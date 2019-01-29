@@ -2,6 +2,8 @@ package com.example.mobile_guide.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ public class ListMobileFragment extends Fragment {
 
     ListView listView;
     List<Mobile> mobiles;
+    Parcelable state;
 
     public ListMobileFragment() {
         super();
@@ -52,7 +55,8 @@ public class ListMobileFragment extends Fragment {
     }
 
     private void initInstances(View rootView) {
-        // Init 'View' instance(s) with rootView.findViewById here
+        //TODO: Sorting
+
         listView = (ListView) rootView.findViewById(R.id.listView);
 
         Call<List<Mobile>> call = HttpManager.getInstance()
@@ -72,9 +76,15 @@ public class ListMobileFragment extends Fragment {
                         intent.putExtra("price",mobiles.get(i).getPrice());
                         intent.putExtra("rating",mobiles.get(i).getRating());
                         intent.putExtra("image",mobiles.get(i).getThumbImageURL());
+
+                        Log.d("Data---------","Price is: "+mobiles.get(i).getPrice());
+                        Log.d("Data---------","Rating is: "+mobiles.get(i).getRating());
                         startActivity(intent);
                     }
                 });
+                if (state  != null) {
+                    listView.onRestoreInstanceState(state);
+                }
             }
 
             @Override
@@ -87,7 +97,24 @@ public class ListMobileFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        state = listView.onSaveInstanceState();
+        super.onPause();
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        if (state  != null) {
+            listView.onRestoreInstanceState(state);
+        }
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
     public void onStart() {
+        if (state  != null) {
+            listView.onRestoreInstanceState(state);
+        }
         super.onStart();
     }
 
@@ -102,7 +129,6 @@ public class ListMobileFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Save Instance State here
     }
 
     /*

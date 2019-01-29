@@ -1,12 +1,17 @@
 package com.example.mobile_guide.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.mobile_guide.DAO.Mobile;
@@ -63,7 +68,29 @@ public class MobileListAdapter extends BaseAdapter {
                 .load(mobile.getThumbImageURL())
                 .into(ivImg);
 
+        final ImageButton imgFav = (ImageButton) convertView.findViewById(R.id.imgFav);
+        imgFav.setImageResource(R.drawable.ic_favourite);
+        imgFav.setTag(R.drawable.ic_favourite);
+        final Integer resource = (Integer) imgFav.getTag();
+        imgFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,"Favorite is clicked", Toast.LENGTH_LONG).show();
+
+                if (resource == R.drawable.ic_favourite){
+                    imgFav.setImageResource(R.drawable.ic_favourite_filled);
+                    //TODO: Save instance state and add data to favorite list
+
+                } else if (resource == R.drawable.ic_favourite_filled) {
+                    imgFav.setImageResource(R.drawable.ic_favourite);
+                    //TODO: Save instance state and remove data to favorite list
+                }
+
+            }
+        });
+
 
         return convertView;
     }
+
 }

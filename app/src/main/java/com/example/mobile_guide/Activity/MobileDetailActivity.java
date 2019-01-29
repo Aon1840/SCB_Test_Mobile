@@ -2,6 +2,7 @@ package com.example.mobile_guide.Activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,7 +13,8 @@ public class MobileDetailActivity extends AppCompatActivity {
 
     TextView tvName, tvDescription, tvPrice, tvRating;
     ImageView ivImg;
-    String name, description, price, rating, image;
+    String name, description, image;
+    int price, rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +34,10 @@ public class MobileDetailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         name = extras.getString("name");
         description = extras.getString("description");
-        price = extras.getString("price");
-        rating = extras.getString("rating");
+        price = extras.getInt("price",0);
+        Log.d("TEST", "Price: "+price);
+        rating = extras.getInt("rating",0);
+        Log.d("TEST", "Rating: "+rating);
         image = extras.getString("image");
 
         tvName.setText(name);
