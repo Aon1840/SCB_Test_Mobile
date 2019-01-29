@@ -1,14 +1,17 @@
 package com.example.mobile_guide.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.mobile_guide.Activity.MobileDetailActivity;
 import com.example.mobile_guide.Adapter.MobileListAdapter;
 import com.example.mobile_guide.DAO.Mobile;
 import com.example.mobile_guide.Manager.HttpManager;
@@ -60,6 +63,18 @@ public class ListMobileFragment extends Fragment {
             public void onResponse(Call<List<Mobile>> call, Response<List<Mobile>> response) {
                 mobiles = response.body();
                 listView.setAdapter(new MobileListAdapter(getContext(), mobiles));
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(getContext(), MobileDetailActivity.class);
+                        intent.putExtra("name", mobiles.get(i).getName());
+                        intent.putExtra("description", mobiles.get(i).getDescription());
+                        intent.putExtra("price",mobiles.get(i).getPrice());
+                        intent.putExtra("rating",mobiles.get(i).getRating());
+                        intent.putExtra("image",mobiles.get(i).getThumbImageURL());
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override
