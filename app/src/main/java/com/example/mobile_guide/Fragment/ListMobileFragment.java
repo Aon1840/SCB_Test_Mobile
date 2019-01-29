@@ -2,11 +2,23 @@ package com.example.mobile_guide.Fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.mobile_guide.Adapter.MobileListAdapter;
+import com.example.mobile_guide.DAO.Mobile;
+import com.example.mobile_guide.Manager.HttpManager;
 import com.example.mobile_guide.R;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -14,6 +26,8 @@ import com.example.mobile_guide.R;
  */
 public class ListMobileFragment extends Fragment {
 
+    ListView listView;
+    List<Mobile> mobiles;
 
     public ListMobileFragment() {
         super();
@@ -36,6 +50,24 @@ public class ListMobileFragment extends Fragment {
 
     private void initInstances(View rootView) {
         // Init 'View' instance(s) with rootView.findViewById here
+        listView = (ListView) rootView.findViewById(R.id.listView);
+
+        Call<List<Mobile>> call = HttpManager.getInstance()
+                .getService()
+                .getAllMobile();
+        call.enqueue(new Callback<List<Mobile>>() {
+            @Override
+            public void onResponse(Call<List<Mobile>> call, Response<List<Mobile>> response) {
+                mobiles = response.body();
+                listView.setAdapter(new MobileListAdapter(getContext(), mobiles));
+            }
+
+            @Override
+            public void onFailure(Call<List<Mobile>> call, Throwable t) {
+                Log.d("TEST---------","Error is: "+t.getMessage());
+                Toast.makeText(getContext(),"Error is: "+t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

@@ -33,7 +33,7 @@ public class HttpManager {
                 .create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://scb-test-mobile.herokuapp.com/")
+                .baseUrl("https://scb-test-mobile.herokuapp.com/api/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

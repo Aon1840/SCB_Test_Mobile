@@ -12,6 +12,18 @@ public class Mobile {
     @SerializedName("rating")           private double rating;
     @SerializedName("thumbImageURL")    private String thumbImageURL;
 
+    public Mobile(){}
+
+    public Mobile(int id, String description, String name, String brand, double price, double rating, String thumbImageURL) {
+        this.id = id;
+        this.description = description;
+        this.name = name;
+        this.brand = brand;
+        this.price = price;
+        this.rating = rating;
+        this.thumbImageURL = thumbImageURL;
+    }
+
     public int getId() {
         return id;
     }
